@@ -1,8 +1,8 @@
 import { Directive, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, NgModule } from '@angular/core';
 import { CdkTable, CDK_TABLE_TEMPLATE, CDK_TABLE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler, CdkCellDef, CdkHeaderCellDef, CdkFooterCellDef, CdkColumnDef, CdkHeaderCell, CdkFooterCell, CdkCell, CdkHeaderRowDef, CdkFooterRowDef, CdkRowDef, CdkHeaderRow, CDK_ROW_TEMPLATE, CdkFooterRow, CdkRow, CdkNoDataRow, CdkTextColumn, CdkTableModule, DataSource } from '@angular/cdk/table';
 import { _VIEW_REPEATER_STRATEGY, _RecycleViewRepeaterStrategy, _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
-import { MatCommonModule } from '@angular/material/core';
 import { MatRow as MatRow$1 } from '@angular/material/table';
+import { MatCommonModule } from '@angular/material/core';
 import { _isNumberValue } from '@angular/cdk/coercion';
 import { BehaviorSubject, Subject, merge, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
