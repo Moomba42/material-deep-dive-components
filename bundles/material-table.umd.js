@@ -722,7 +722,7 @@
     IvRow.decorators = [
         { type: core.Component, args: [{
                     selector: 'iv-row, tr[iv-row]',
-                    template: '<ng-container cdkCellOutlet></ng-container>',
+                    template: table.CDK_ROW_TEMPLATE,
                     host: {
                         'class': 'mat-row iv-row',
                         'role': 'row',
@@ -732,7 +732,7 @@
                     changeDetection: core.ChangeDetectionStrategy.Default,
                     encapsulation: core.ViewEncapsulation.None,
                     exportAs: 'ivRow',
-                    providers: [{ provide: table.CdkRow, useExisting: IvRow }]
+                    providers: [{ provide: MatRow, useExisting: IvRow }]
                 },] }
     ];
     IvRow.propDecorators = {

@@ -356,7 +356,7 @@ class IvRow extends MatRow {
 IvRow.decorators = [
     { type: Component, args: [{
                 selector: 'iv-row, tr[iv-row]',
-                template: '<ng-container cdkCellOutlet></ng-container>',
+                template: CDK_ROW_TEMPLATE,
                 host: {
                     'class': 'mat-row iv-row',
                     'role': 'row',
@@ -366,7 +366,7 @@ IvRow.decorators = [
                 changeDetection: ChangeDetectionStrategy.Default,
                 encapsulation: ViewEncapsulation.None,
                 exportAs: 'ivRow',
-                providers: [{ provide: CdkRow, useExisting: IvRow }]
+                providers: [{ provide: MatRow, useExisting: IvRow }]
             },] }
 ];
 IvRow.propDecorators = {
