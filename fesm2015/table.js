@@ -2,6 +2,7 @@ import { Directive, Component, ViewEncapsulation, ChangeDetectionStrategy, Input
 import { CdkTable, CDK_TABLE_TEMPLATE, CDK_TABLE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler, CdkCellDef, CdkHeaderCellDef, CdkFooterCellDef, CdkColumnDef, CdkHeaderCell, CdkFooterCell, CdkCell, CdkHeaderRowDef, CdkFooterRowDef, CdkRowDef, CdkHeaderRow, CDK_ROW_TEMPLATE, CdkFooterRow, CdkRow, CdkNoDataRow, CdkTextColumn, CdkTableModule, DataSource } from '@angular/cdk/table';
 import { _VIEW_REPEATER_STRATEGY, _RecycleViewRepeaterStrategy, _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
 import { MatCommonModule } from '@angular/material/core';
+import { MatRow as MatRow$1 } from '@angular/material/table';
 import { _isNumberValue } from '@angular/cdk/coercion';
 import { BehaviorSubject, Subject, merge, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -332,6 +333,26 @@ MatTextColumn.decorators = [
             },] }
 ];
 
+/** Data row template container that contains the cell outlet. Adds the right class and role. */
+class IvRow extends MatRow$1 {
+}
+IvRow.decorators = [
+    { type: Component, args: [{
+                selector: 'iv-row, tr[iv-row]',
+                template: CDK_ROW_TEMPLATE,
+                host: {
+                    'class': 'mat-row',
+                    'role': 'row',
+                },
+                // See note on CdkTable for explanation on why this uses the default change detection strategy.
+                // tslint:disable-next-line:validate-decorators
+                changeDetection: ChangeDetectionStrategy.Default,
+                encapsulation: ViewEncapsulation.None,
+                exportAs: 'ivRow',
+                providers: [{ provide: CdkRow, useExisting: IvRow }]
+            },] }
+];
+
 /**
  * @license
  * Copyright Google LLC All Rights Reserved.
@@ -361,6 +382,8 @@ const EXPORTED_DECLARATIONS = [
     MatFooterRow,
     MatNoDataRow,
     MatTextColumn,
+    // Extensions
+    IvRow
 ];
 class MatTableModule {
 }
@@ -681,5 +704,5 @@ class MatTableDataSource extends _MatTableDataSource {
  * Generated bundle index. Do not edit.
  */
 
-export { MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterCellDef, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRecycleRows, MatRow, MatRowDef, MatTable, MatTableDataSource, MatTableModule, MatTextColumn, _MatTableDataSource };
+export { IvRow, MatCell, MatCellDef, MatColumnDef, MatFooterCell, MatFooterCellDef, MatFooterRow, MatFooterRowDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRecycleRows, MatRow, MatRowDef, MatTable, MatTableDataSource, MatTableModule, MatTextColumn, _MatTableDataSource };
 //# sourceMappingURL=table.js.map

@@ -39,11 +39,5 @@
   "sideEffects": false,
   "publishConfig": {
     "registry": "https://wombat-dressing-room.appspot.com"
-  },
-  "main": "./bundles/material.umd.js",
-  "fesm2015": "./fesm2015/material.js",
-  "esm2015": "./esm2015/index.js",
-  "typings": "./index.d.ts",
-  "module": "./fesm2015/material.js",
-  "es2015": "./fesm2015/material.js"
+  }
 }
