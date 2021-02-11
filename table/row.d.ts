@@ -7,6 +7,8 @@
  */
 import { BooleanInput } from '@angular/cdk/coercion';
 import { CdkFooterRow, CdkFooterRowDef, CdkHeaderRow, CdkHeaderRowDef, CdkRow, CdkRowDef, CdkNoDataRow } from '@angular/cdk/table';
+import { EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { MatRipple } from '@angular/material/core';
 /**
  * Header row definition for the mat-table.
  * Captures the header row's template and other header properties such as the columns to display.
@@ -39,4 +41,14 @@ export declare class MatRow extends CdkRow {
 }
 /** Row that can be used to display a message when no data is shown in the table. */
 export declare class MatNoDataRow extends CdkNoDataRow {
+}
+/** Data row template container that contains the cell outlet. Adds the right class and role. */
+export declare class IvRow extends MatRow implements OnChanges {
+    ripple: MatRipple;
+    selected: boolean;
+    selectedChange: EventEmitter<boolean>;
+    get isSelected(): boolean;
+    get isSelectable(): boolean;
+    onClick(): void;
+    ngOnChanges(changes: SimpleChanges): void;
 }

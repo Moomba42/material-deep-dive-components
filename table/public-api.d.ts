@@ -11,4 +11,3 @@ export * from './table';
 export * from './row';
 export * from './table-data-source';
 export * from './text-column';
-export * from './ivion/row';
