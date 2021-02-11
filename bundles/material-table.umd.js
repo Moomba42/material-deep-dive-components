@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/table'), require('@angular/cdk/collections'), require('@angular/material/table'), require('@angular/material/core'), require('@angular/cdk/coercion'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('@angular/material/table', ['exports', '@angular/core', '@angular/cdk/table', '@angular/cdk/collections', '@angular/material/table', '@angular/material/core', '@angular/cdk/coercion', 'rxjs', 'rxjs/operators'], factory) :
-    (global = global || self, factory((global.ng = global.ng || {}, global.ng.material = global.ng.material || {}, global.ng.material.table = {}), global.ng.core, global.ng.cdk.table, global.ng.cdk.collections, global.ng.material.table, global.ng.material.core, global.ng.cdk.coercion, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, core, table, collections, table$1, core$1, coercion, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/table'), require('@angular/cdk/collections'), require('@angular/material/core'), require('@angular/cdk/coercion'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('@angular/material/table', ['exports', '@angular/core', '@angular/cdk/table', '@angular/cdk/collections', '@angular/material/core', '@angular/cdk/coercion', 'rxjs', 'rxjs/operators'], factory) :
+    (global = global || self, factory((global.ng = global.ng || {}, global.ng.material = global.ng.material || {}, global.ng.material.table = {}), global.ng.core, global.ng.cdk.table, global.ng.cdk.collections, global.ng.material.core, global.ng.cdk.coercion, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, core, table, collections, core$1, coercion, rxjs, operators) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -691,16 +691,40 @@
     var IvRow = /** @class */ (function (_super) {
         __extends(IvRow, _super);
         function IvRow() {
-            return _super !== null && _super.apply(this, arguments) || this;
+            var _this = _super.apply(this, __spread(arguments)) || this;
+            _this.selectedChange = new core.EventEmitter();
+            return _this;
         }
+        Object.defineProperty(IvRow.prototype, "isSelected", {
+            get: function () {
+                return this.selected;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(IvRow.prototype, "isSelectable", {
+            get: function () {
+                return this.selectedChange.observers.length > 0;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        IvRow.prototype.onClick = function () {
+            this.selectedChange.emit(!this.selected);
+        };
+        IvRow.prototype.ngOnChanges = function (changes) {
+            if (this.ripple) {
+                this.ripple.disabled = !this.isSelectable;
+            }
+        };
         return IvRow;
-    }(table$1.MatRow));
+    }(MatRow));
     IvRow.decorators = [
         { type: core.Component, args: [{
                     selector: 'iv-row, tr[iv-row]',
-                    template: table.CDK_ROW_TEMPLATE,
+                    template: '<ng-container cdkCellOutlet></ng-container>',
                     host: {
-                        'class': 'mat-row',
+                        'class': 'mat-row iv-row',
                         'role': 'row',
                     },
                     // See note on CdkTable for explanation on why this uses the default change detection strategy.
@@ -711,6 +735,14 @@
                     providers: [{ provide: table.CdkRow, useExisting: IvRow }]
                 },] }
     ];
+    IvRow.propDecorators = {
+        ripple: [{ type: core.ViewChild, args: [core$1.MatRipple,] }],
+        selected: [{ type: core.Input }],
+        selectedChange: [{ type: core.Output }],
+        isSelected: [{ type: core.HostBinding, args: ['class.iv-row-selected',] }],
+        isSelectable: [{ type: core.HostBinding, args: ['class.iv-row-selectable',] }],
+        onClick: [{ type: core.HostListener, args: ['click',] }]
+    };
 
     /**
      * @license
@@ -738,11 +770,10 @@
         // Row directives
         MatHeaderRow,
         MatRow,
+        IvRow,
         MatFooterRow,
         MatNoDataRow,
         MatTextColumn,
-        // Extensions
-        IvRow
     ];
     var MatTableModule = /** @class */ (function () {
         function MatTableModule() {
@@ -754,6 +785,7 @@
                     imports: [
                         table.CdkTableModule,
                         core$1.MatCommonModule,
+                        core$1.MatRippleModule,
                     ],
                     exports: [core$1.MatCommonModule, EXPORTED_DECLARATIONS],
                     declarations: EXPORTED_DECLARATIONS,

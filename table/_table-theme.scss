@@ -68,3 +68,25 @@
     }
   }
 }
+
+@mixin iv-table-theme($config-or-theme) {
+    $config: mat-get-color-config($config-or-theme);
+    $background: map-get($config, background);
+    $hover: map-get($background, hover);
+    $selected: opacify($hover, 0.1);
+
+    .iv-row-selected {
+        background: $selected;
+    }
+
+    .iv-row-selectable {
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .iv-row-selectable:hover {
+        background: $hover;
+    }
+}
+

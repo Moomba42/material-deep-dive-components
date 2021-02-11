@@ -1,8 +1,7 @@
-import { Directive, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, NgModule } from '@angular/core';
+import { Directive, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, EventEmitter, ViewChild, Output, HostBinding, HostListener, NgModule } from '@angular/core';
 import { CdkTable, CDK_TABLE_TEMPLATE, CDK_TABLE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler, CdkCellDef, CdkHeaderCellDef, CdkFooterCellDef, CdkColumnDef, CdkHeaderCell, CdkFooterCell, CdkCell, CdkHeaderRowDef, CdkFooterRowDef, CdkRowDef, CdkHeaderRow, CDK_ROW_TEMPLATE, CdkFooterRow, CdkRow, CdkNoDataRow, CdkTextColumn, CdkTableModule, DataSource } from '@angular/cdk/table';
 import { _VIEW_REPEATER_STRATEGY, _RecycleViewRepeaterStrategy, _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
-import { MatRow as MatRow$1 } from '@angular/material/table';
-import { MatCommonModule } from '@angular/material/core';
+import { MatRipple, MatCommonModule, MatRippleModule } from '@angular/material/core';
 import { _isNumberValue } from '@angular/cdk/coercion';
 import { BehaviorSubject, Subject, merge, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -334,14 +333,32 @@ MatTextColumn.decorators = [
 ];
 
 /** Data row template container that contains the cell outlet. Adds the right class and role. */
-class IvRow extends MatRow$1 {
+class IvRow extends MatRow {
+    constructor() {
+        super(...arguments);
+        this.selectedChange = new EventEmitter();
+    }
+    get isSelected() {
+        return this.selected;
+    }
+    get isSelectable() {
+        return this.selectedChange.observers.length > 0;
+    }
+    onClick() {
+        this.selectedChange.emit(!this.selected);
+    }
+    ngOnChanges(changes) {
+        if (this.ripple) {
+            this.ripple.disabled = !this.isSelectable;
+        }
+    }
 }
 IvRow.decorators = [
     { type: Component, args: [{
                 selector: 'iv-row, tr[iv-row]',
-                template: CDK_ROW_TEMPLATE,
+                template: '<ng-container cdkCellOutlet></ng-container>',
                 host: {
-                    'class': 'mat-row',
+                    'class': 'mat-row iv-row',
                     'role': 'row',
                 },
                 // See note on CdkTable for explanation on why this uses the default change detection strategy.
@@ -352,6 +369,14 @@ IvRow.decorators = [
                 providers: [{ provide: CdkRow, useExisting: IvRow }]
             },] }
 ];
+IvRow.propDecorators = {
+    ripple: [{ type: ViewChild, args: [MatRipple,] }],
+    selected: [{ type: Input }],
+    selectedChange: [{ type: Output }],
+    isSelected: [{ type: HostBinding, args: ['class.iv-row-selected',] }],
+    isSelectable: [{ type: HostBinding, args: ['class.iv-row-selectable',] }],
+    onClick: [{ type: HostListener, args: ['click',] }]
+};
 
 /**
  * @license
@@ -379,11 +404,10 @@ const EXPORTED_DECLARATIONS = [
     // Row directives
     MatHeaderRow,
     MatRow,
+    IvRow,
     MatFooterRow,
     MatNoDataRow,
     MatTextColumn,
-    // Extensions
-    IvRow
 ];
 class MatTableModule {
 }
@@ -392,6 +416,7 @@ MatTableModule.decorators = [
                 imports: [
                     CdkTableModule,
                     MatCommonModule,
+                    MatRippleModule,
                 ],
                 exports: [MatCommonModule, EXPORTED_DECLARATIONS],
                 declarations: EXPORTED_DECLARATIONS,

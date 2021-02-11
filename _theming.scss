@@ -3608,6 +3608,28 @@ $mat-chip-remove-font-size: 18px;
   }
 }
 
+@mixin iv-table-theme($config-or-theme) {
+    $config: mat-get-color-config($config-or-theme);
+    $background: map-get($config, background);
+    $hover: map-get($background, hover);
+    $selected: opacify($hover, 0.1);
+
+    .iv-row-selected {
+        background: $selected;
+    }
+
+    .iv-row-selectable {
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .iv-row-selectable:hover {
+        background: $hover;
+    }
+}
+
+
 
 
 
@@ -7159,6 +7181,7 @@ $mat-tree-density-config: (
     @include mat-tooltip-theme($theme-or-color-config);
     @include mat-tree-theme($theme-or-color-config);
     @include mat-snack-bar-theme($theme-or-color-config);
+    @include iv-table-theme($theme-or-color-config);
   }
 }
 
